@@ -1,0 +1,124 @@
+<html>
+
+    <head>
+        
+        <title>System Control</title>
+ 
+        <script type="text/javascript" src="jquery.min.js"></script>
+        
+        <style type="text/css">
+
+             body
+                {
+                    margin: 0;
+                    padding: 0;
+                    font-size: 1.6rem;
+                    color: #1a1a1a;
+                    background: linear-gradient(to bottom, #aaa, #fff 60%);
+                    background-repeat: no-repeat;
+                }
+
+            .container{
+                margin:0 auto;
+                align-content: center;
+                text-align: center;
+            }
+            th, td {
+               border: 1px solid black;
+            }
+        
+        </style>
+        
+    </head>
+
+    <body>
+
+        <div >
+            <br>
+            <br>
+
+ <h1 class="container">IoT system</h1>  
+            <br>
+            <br>
+            <h2 class="container">System status and Control</h2>
+            <br>
+            <br>
+            <table class="container" style="font-size: 5vh;">
+                    <tr>
+                      <th>Unit</th>
+                      <th>Status</th> 
+                      <th>Control</th>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td id="s1">N/A</td> 
+                      <td><button style="font-size: 100%;" id="c1">Switch</button></td> 
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td id="s2">N/A</td> 
+                      <td><button style="font-size: 100%;" id="c2">Switch</button></td> 
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td id="s3">N/A</td>
+                      <td><button style="font-size: 100%;" id="c3">Switch</button></td> 
+                    </tr>
+            </table>
+            <br>
+       
+
+
+        </div>
+      <script type="text/javascript">
+      function check(){
+        jQuery.ajax({
+    type: "GET",
+    url: "http://localhost:8080/status",
+    dataType: "json",
+    success: function(response) {
+        console.log(response);
+        $("#s1").html(response.s1);
+        $("#s2").html(response.s2);
+        $("#s3").html(response.s3);
+          }
+        });
+     }
+            jQuery(document).ready(function(){
+              check();
+        });
+        window.setInterval(function(){
+        check()}, 30000);
+      </script>
+
+      <script>
+      $("#c1").click(function(){
+          if($("#s1").html()=="On")
+          {$.get( "http://localhost:8080/s1off" );
+          $("#s1").html("Off");}
+          else
+          {$.get( "http://localhost:8080/s1on" );
+          $("#s1").html("On");}
+      });
+      $("#c2").click(function(){
+          if($("#s2").html()=="On")
+          {$.get( "http://localhost:8080/s2off" );
+          $("#s2").html("Off");}
+          else
+          {$.get( "http://localhost:8080/s2on" );
+          $("#s2").html("On");}
+      });
+      $("#c3").click(function(){
+          if($("#s3").html()=="On")
+          {$.get( "http://localhost:8080/s3off" );
+          $("#s3").html("Off");}
+          else
+          {$.get( "http://localhost:8080/s3on" );
+          $("#s3").html("On");}
+      });
+      
+      </script>
+        
+    </body>
+
+</html>
